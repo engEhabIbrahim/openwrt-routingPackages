@@ -579,7 +579,8 @@ olsrd_write_interface() {
 					ifsglobal="$ifsglobal $IFNAME"
 				fi
 			else
-				log "$funcname() Warning: Interface '$interface' not found, skipped"
+				log "$funcname() Warning: Interface '$interface' not found, set dummy"
+				ifnames="$ifnames \"$interface\""
 			fi
 		else
 			warning_invalid_value olsrd "$cfg" "interface"
