@@ -31,7 +31,12 @@ start_service() {
 
 service_triggers() {
 	# restart on ifup interface events
-	for n in $(olsrd_list_configured_interfaces $OLSRD); do
-		procd_add_reload_interface_trigger $n /etc/init.d/$OLSRD reload
-	done
+        procd_open_trigger                  
+        for file in network wireless system olsrd6; do           
+                procd_add_config_trigger "config.change" "$file" /etc/init.d/$OLSRD reload
+        done                                                                              
+        for n in $(olsrd_list_configured_interfaces $OLSRD); do                           
+                procd_add_interface_trigger "interface.*" $n /etc/init.d/$OLSRD reload    
+        done                                                                              
+        procd_close_trigger
 }
