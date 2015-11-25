@@ -24,6 +24,9 @@ start_service() {
 	# automatically restart olsrd if generated cfg has changed
 	procd_set_param file $CONF
 
+	# redirects the stderr to syslog
+	procd_set_param stderr 1
+
 	procd_close_instance
 
 	olsrd_setup_smartgw_rules
