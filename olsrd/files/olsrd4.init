@@ -17,11 +17,14 @@ start_service() {
 	procd_append_param command -f ${CONF}
 	procd_append_param command -nofork
 
-	# restart if olsrd dies
+	# restart if olsrd dies max 5 times
 	procd_set_param respawn
 
 	# automatically restart olsrd if generated cfg has changed
 	procd_set_param file $CONF
+
+	# redirects the stderr to syslog
+	procd_set_param stderr 1
 
 	procd_close_instance
 
