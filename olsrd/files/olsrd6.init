@@ -28,18 +28,16 @@ start_service() {
 	procd_set_param stderr 1
 
 	procd_close_instance
-
-	olsrd_setup_smartgw_rules
 }
 
 service_triggers() {
 	# restart on ifup interface events
-        procd_open_trigger                  
-        for file in network wireless system olsrd6; do           
+        procd_open_trigger
+        for file in network wireless system olsrd6; do
                 procd_add_config_trigger "config.change" "$file" /etc/init.d/$OLSRD reload
-        done                                                                              
-        for n in $(olsrd_list_configured_interfaces $OLSRD); do                           
-                procd_add_interface_trigger "interface.*" $n /etc/init.d/$OLSRD reload    
-        done                                                                              
+        done
+        for n in $(olsrd_list_configured_interfaces $OLSRD); do
+                procd_add_interface_trigger "interface.*" $n /etc/init.d/$OLSRD reload
+        done
         procd_close_trigger
 }
